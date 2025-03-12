@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - CaliforniaShack</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --matrix-black: #000000;
+            --matrix-green: #00ff41;
+            --matrix-dim-green: #003b00;
+            --matrix-silver: #c0c0c0;
+            --matrix-dark-silver: #333333;
+            --glow-shadow: 0 0 10px var(--matrix-green), 0 0 20px var(--matrix-green), 0 0 30px var(--matrix-green);
+        }
+
+        @keyframes glowPulse {
+            0% {
+                box-shadow: 0 0 5px var(--matrix-green);
+            }
+            50% {
+                box-shadow: 0 0 20px var(--matrix-green);
+            }
+            100% {
+                box-shadow: 0 0 5px var(--matrix-green);
+            }
+        }
+
+        @keyframes textGlow {
+            0% {
+                text-shadow: 0 0 5px var(--matrix-green);
+            }
+            50% {
+                text-shadow: 0 0 15px var(--matrix-green);
+            }
+            100% {
+                text-shadow: 0 0 5px var(--matrix-green);
+            }
+        }
+
+        body {
+            background-color: var(--matrix-black);
+            font-family: 'Poppins', sans-serif;
+            color: var(--matrix-silver);
+            line-height: 1.8;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(0deg, 
+                rgba(0, 0, 0, 0.97), 
+                rgba(0, 0, 0, 0.9)
+            );
+            z-index: -1;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--matrix-green);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.9);
+            border-bottom: 1px solid var(--matrix-green);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--matrix-green) !important;
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            text-shadow: var(--glow-shadow);
+        }
+
+        .nav-link {
+            color: var(--matrix-silver) !important;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0 1rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--matrix-green) !important;
+            text-shadow: var(--glow-shadow);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--matrix-green);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+            box-shadow: var(--glow-shadow);
+        }
+
+        .page-header {
+            margin-top: 76px;
+            padding: 6rem 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9)),
+                        url('https://placehold.co/1200x400/003b00/FFFFFF');
+            position: relative;
+            border-bottom: 1px solid var(--matrix-green);
+        }
+
+        .page-header h1 {
+            animation: textGlow 2s infinite;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .about-image {
+            border: 2px solid var(--matrix-green);
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 255, 65, 0.3),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .about-image:hover::before {
+            left: 100%;
+        }
+
+        .about-image:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glow-shadow);
+        }
+
+        .values-card {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--matrix-green);
+            border-radius: 5px;
+            padding: 2rem;
+            margin: 1rem 0;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .values-card:hover {
+            box-shadow: var(--glow-shadow);
+        }
+
+        .values-card h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .values-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .values-card li {
+            margin: 1rem 0;
+            padding: 1rem;
+            border: 1px solid var(--matrix-green);
+            border-radius: 5px;
+            background: rgba(0, 255, 65, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .values-card li::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 255, 65, 0.1),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .values-card li:hover::before {
+            left: 100%;
+        }
+
+        .values-card li:hover {
+            transform: translateX(10px);
+            background: rgba(0, 255, 65, 0.1);
+        }
+
+        .values-card strong {
+            color: var(--matrix-green);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.9);
+            border-top: 1px solid var(--matrix-green);
+            color: var(--matrix-silver);
+            padding: 2rem 0;
+        }
+
+        .social-icons {
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            color: var(--matrix-silver);
+            margin: 0 1rem;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: var(--matrix-green);
+            text-shadow: var(--glow-shadow);
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 4rem 0;
+            }
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">CaliforniaShack</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blog.html">Blog</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            Products
+                        </a>
+                        <ul class="dropdown-menu bg-dark">
+                            <li><a class="dropdown-item text-light" href="products.html#repair">Repair Services</a></li>
+                            <li><a class="dropdown-item text-light" href="products.html#tops">Tops</a></li>
+                            <li><a class="dropdown-item text-light" href="products.html#bottoms">Bottoms</a></li>
+                            <li><a class="dropdown-item text-light" href="products.html#gold">Gold Jewelry</a></li>
+                            <li><a class="dropdown-item text-light" href="products.html#silver">Silver Jewelry</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="container text-center">
+            <h1>About Us</h1>
+            <p class="lead">Where Y2K Fashion Meets Digital Revolution</p>
+        </div>
+    </header>
+
+    <main class="container py-5">
+        <section class="row align-items-center mb-5">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <img src="https://placehold.co/600x400/003b00/FFFFFF" alt="Our Vision" class="img-fluid about-image">
+            </div>
+            <div class="col-md-6">
+                <h2 class="mb-4">Our Story</h2>
+                <p>Founded in 2024, CaliforniaShack emerged from the digital revolution with a vision to bridge the gap between Y2K nostalgia and future fashion. We curate and restore vintage pieces that capture the essence of the early digital age.</p>
+                <p>Our team of fashion hackers and style innovators work tirelessly to bring you the most authentic Y2K pieces, each telling its own story of the digital dawn era.</p>
+            </div>
+        </section>
+
+        <section>
+            <div class="values-card">
+                <h2>Core Values</h2>
+                <ul>
+                    <li><strong>Digital Heritage</strong> - Preserving the aesthetic of the Y2K era</li>
+                    <li><strong>Future Vision</strong> - Innovating vintage fashion for tomorrow</li>
+                    <li><strong>Sustainable Matrix</strong> - Eco-conscious fashion in the digital age</li>
+                    <li><strong>Community Code</strong> - Building a network of style enthusiasts</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center">
+        <div class="container">
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+            </div>
+            <p class="mt-3 mb-0">&copy; 2024 CaliforniaShack. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html> 

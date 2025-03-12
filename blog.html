@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - CaliforniaShack</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --cs-white: #ffffff;
+            --cs-black: #000000;
+            --cs-grey-100: #f8f9fa;
+            --cs-grey-200: #e9ecef;
+            --cs-grey-300: #dee2e6;
+            --cs-grey-600: #6c757d;
+            --cs-grey-900: #212529;
+        }
+
+        body {
+            background-color: var(--cs-white);
+            font-family: 'Montserrat', sans-serif;
+            color: var(--cs-grey-900);
+            line-height: 1.8;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .navbar {
+            background: var(--cs-white);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--cs-grey-200);
+        }
+
+        .navbar-brand {
+            padding: 0;
+        }
+
+        .navbar-brand img {
+            height: 40px;
+            width: auto;
+        }
+
+        .nav-link {
+            color: var(--cs-grey-900) !important;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0.5rem 1.5rem !important;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--cs-grey-600) !important;
+        }
+
+        .dropdown-menu {
+            border: 1px solid var(--cs-grey-200);
+            border-radius: 0;
+            padding: 0.5rem 0;
+        }
+
+        .dropdown-item {
+            font-weight: 500;
+            padding: 0.5rem 1.5rem;
+            color: var(--cs-grey-900);
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--cs-grey-100);
+        }
+
+        .page-header {
+            margin-top: 76px;
+            padding: 4rem 0;
+            background-color: var(--cs-grey-100);
+            border-bottom: 1px solid var(--cs-grey-200);
+        }
+
+        .page-header h1 {
+            color: var(--cs-black);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .blog-card {
+            background: var(--cs-white);
+            border: 1px solid var(--cs-grey-200);
+            border-radius: 0;
+            overflow: hidden;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-card img {
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--cs-grey-200);
+        }
+
+        .blog-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .blog-card .card-title {
+            color: var(--cs-black);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .blog-card .card-text {
+            color: var(--cs-grey-600);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .blog-meta {
+            color: var(--cs-grey-600);
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background-color: var(--cs-black);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 0;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--cs-grey-900);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            background: var(--cs-white);
+            border-top: 1px solid var(--cs-grey-200);
+            padding: 3rem 0;
+            color: var(--cs-grey-900);
+        }
+
+        .social-icons {
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            color: var(--cs-grey-600);
+            margin: 0 1rem;
+            font-size: 1.25rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: var(--cs-black);
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 3rem 0;
+            }
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            .navbar-brand img {
+                height: 30px;
+            }
+            .blog-card img {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="https://placehold.co/120x40/000000/FFFFFF?text=CS+Bear" alt="CaliforniaShack">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html#tops">Tops</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html#bottoms">Bottoms</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html#gold">Gold</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html#silver">Silver</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown">
+                            Services
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="products.html#repair">Repairs</a></li>
+                            <li><a class="dropdown-item" href="products.html#consignment">Consignment</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="container text-center">
+            <h1>Latest Updates</h1>
+            <p class="lead">News and Stories from CaliforniaShack</p>
+        </div>
+    </header>
+
+    <main class="container py-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="blog-card">
+                    <img src="https://placehold.co/400x200" alt="Blog Post 1" class="card-img-top">
+                    <div class="card-body">
+                        <div class="blog-meta">June 15, 2024 | Vintage Fashion</div>
+                        <h3 class="card-title">The Return of Y2K Fashion</h3>
+                        <p class="card-text">Exploring the resurgence of Y2K fashion and its influence on contemporary style trends.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="blog-card">
+                    <img src="https://placehold.co/400x200" alt="Blog Post 2" class="card-img-top">
+                    <div class="card-body">
+                        <div class="blog-meta">June 10, 2024 | Care Guide</div>
+                        <h3 class="card-title">Vintage Care Tips</h3>
+                        <p class="card-text">Essential tips for maintaining and preserving your vintage clothing collection.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="blog-card">
+                    <img src="https://placehold.co/400x200" alt="Blog Post 3" class="card-img-top">
+                    <div class="card-body">
+                        <div class="blog-meta">June 5, 2024 | Style Guide</div>
+                        <h3 class="card-title">Mixing Vintage & Modern</h3>
+                        <p class="card-text">How to create contemporary looks with vintage pieces from different eras.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center">
+        <div class="container">
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+            </div>
+            <p class="mt-3 mb-0">&copy; 2024 CaliforniaShack. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html> 
