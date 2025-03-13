@@ -104,13 +104,13 @@
 
         .nav-arrow {
             position: absolute;
-            bottom: 20px;
-            background-color: rgba(0, 0, 0, 0.5);
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
             color: white;
             border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            border-radius: 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -120,23 +120,19 @@
         }
 
         .nav-arrow:hover {
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: var(--cs-black);
         }
 
         .nav-arrow.prev {
-            left: 20px;
+            left: 0;
         }
 
         .nav-arrow.next {
-            right: 20px;
-        }
-
-        .nav-arrow.hidden {
-            display: none;
+            right: 0;
         }
 
         .nav-arrow i {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
         }
 
         .product-image {
@@ -321,11 +317,11 @@
                 display: none;
             }
             .nav-arrow {
-                width: 36px;
-                height: 36px;
+                width: 40px;
+                height: 40px;
             }
             .nav-arrow i {
-                font-size: 1.2rem;
+                font-size: 1rem;
             }
         }
     </style>
