@@ -105,77 +105,62 @@
 
         .nav-arrow {
             position: absolute;
+            top: 0;
             bottom: 0;
             color: white;
             border: none;
-            width: 50px;
-            height: 100px;
+            width: 100px;
+            height: 100%;
             border-radius: 0;
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
             z-index: 2;
-            padding-bottom: 15px;
         }
 
         .nav-arrow.prev {
             left: 0;
             background: linear-gradient(to right,
-                rgba(0, 0, 0, 0.5) 0%,
-                rgba(0, 0, 0, 0.3) 30%,
-                rgba(0, 0, 0, 0.1) 60%,
+                rgba(0, 0, 0, 0.3) 0%,
+                rgba(0, 0, 0, 0.15) 40%,
+                rgba(0, 0, 0, 0.05) 70%,
                 transparent 100%
-            ), linear-gradient(to bottom,
-                transparent 0%,
-                rgba(0, 0, 0, 0.2) 60%,
-                rgba(0, 0, 0, 0.5) 100%
             );
         }
 
         .nav-arrow.next {
             right: 0;
             background: linear-gradient(to left,
-                rgba(0, 0, 0, 0.5) 0%,
-                rgba(0, 0, 0, 0.3) 30%,
-                rgba(0, 0, 0, 0.1) 60%,
+                rgba(0, 0, 0, 0.3) 0%,
+                rgba(0, 0, 0, 0.15) 40%,
+                rgba(0, 0, 0, 0.05) 70%,
                 transparent 100%
-            ), linear-gradient(to bottom,
-                transparent 0%,
-                rgba(0, 0, 0, 0.2) 60%,
-                rgba(0, 0, 0, 0.5) 100%
             );
         }
 
         .nav-arrow.prev:hover {
             background: linear-gradient(to right,
-                rgba(0, 0, 0, 0.6) 0%,
-                rgba(0, 0, 0, 0.4) 30%,
-                rgba(0, 0, 0, 0.2) 60%,
+                rgba(0, 0, 0, 0.4) 0%,
+                rgba(0, 0, 0, 0.2) 40%,
+                rgba(0, 0, 0, 0.1) 70%,
                 transparent 100%
-            ), linear-gradient(to bottom,
-                transparent 0%,
-                rgba(0, 0, 0, 0.3) 60%,
-                rgba(0, 0, 0, 0.6) 100%
             );
         }
 
         .nav-arrow.next:hover {
             background: linear-gradient(to left,
-                rgba(0, 0, 0, 0.6) 0%,
-                rgba(0, 0, 0, 0.4) 30%,
-                rgba(0, 0, 0, 0.2) 60%,
+                rgba(0, 0, 0, 0.4) 0%,
+                rgba(0, 0, 0, 0.2) 40%,
+                rgba(0, 0, 0, 0.1) 70%,
                 transparent 100%
-            ), linear-gradient(to bottom,
-                transparent 0%,
-                rgba(0, 0, 0, 0.3) 60%,
-                rgba(0, 0, 0, 0.6) 100%
             );
         }
 
         .nav-arrow i {
             font-size: 1.2rem;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         }
 
         .product-image {
@@ -375,9 +360,7 @@
                 display: none;
             }
             .nav-arrow {
-                width: 40px;
-                height: 80px;
-                padding-bottom: 10px;
+                width: 60px;
             }
             .nav-arrow i {
                 font-size: 1rem;
