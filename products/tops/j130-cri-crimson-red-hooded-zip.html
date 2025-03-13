@@ -222,12 +222,15 @@
             border-radius: 0;
             transition: all 0.3s ease;
             width: 100%;
-            margin-top: 2rem;
         }
 
         .btn-primary:hover {
             background-color: var(--cs-grey-900);
             transform: translateY(-2px);
+        }
+
+        .add-to-cart-button {
+            margin-top: 2rem;
         }
 
         .mobile-cart-button {
@@ -320,7 +323,8 @@
                 margin-top: 80px;
             }
             .product-detail {
-                margin-bottom: 80px;
+                margin-top: 80px;
+                padding-bottom: 80px;
             }
             .mobile-cart-button {
                 display: block;
@@ -334,6 +338,13 @@
             }
             .nav-arrow i {
                 font-size: 1rem;
+            }
+            .add-to-cart-button {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                margin: 0;
+                z-index: 1000;
             }
         }
     </style>
@@ -405,7 +416,6 @@
                             <img src="../../Assets/tops/j130_crimson/j97_cri_d.jpg" alt="J130 CRI Crimson Red Hooded Zip Detail View" class="thumbnail" onclick="updateMainImage(this.src)">
                             <img src="../../Assets/tops/j130_crimson/j97_cri_t.jpg" alt="J130 CRI Crimson Red Hooded Zip Tag View" class="thumbnail" onclick="updateMainImage(this.src)">
                         </div>
-                        <button class="btn btn-primary desktop-cart-button">Add to Cart</button>
                     </div>
                 </div>
                 <div class="col-md-5">
@@ -441,7 +451,7 @@
                             <p>Excellent vintage condition. Minor wear consistent with age and use. No significant flaws or issues.</p>
                         </div>
 
-                        <button class="btn btn-primary desktop-cart-button">Add to Cart</button>
+                        <button class="btn btn-primary add-to-cart-button">Add to Cart</button>
                     </div>
                 </div>
             </div>
