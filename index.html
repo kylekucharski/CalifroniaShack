@@ -38,9 +38,9 @@
 
 		.navbar {
 			background: var(--cs-white);
-			height: 80px;
-			padding: 0;
-			border-bottom: 2px solid var(--cs-grey-300);
+			height: 60px;
+			padding: 0.5rem 0;
+			border-bottom: 1px solid var(--cs-grey-300);
 			position: relative;
 		}
 
@@ -52,9 +52,9 @@
 		}
 
 		.navbar-brand img {
-			height: 80px;
+			height: 50px;
 			width: auto;
-			max-width: 240px;
+			max-width: 150px;
 			background-color: transparent;
 		}
 
@@ -78,8 +78,8 @@
 			font-weight: 700;
 			text-transform: uppercase;
 			letter-spacing: 1px;
-			padding: 0 2rem !important;
-			font-size: 1.5rem;
+			padding: 0 1.5rem !important;
+			font-size: 1.2rem;
 			transition: color 0.3s ease;
 			height: 100%;
 			display: flex;
@@ -92,19 +92,17 @@
 
 		.dropdown-menu {
 			border: none;
-			border-radius: 0;
-			padding: 0;
+			border-radius: 5px;
+			padding: 0.5rem 0;
 			background: var(--cs-white);
-			box-shadow: none;
-			margin-top: 0;
-			border-bottom: 1px solid var(--cs-grey-300);
+			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 			opacity: 0;
 			transform: translateY(-5px);
-			transition: all 0.2s ease-in-out;
+			transition: all 0.3s ease-in-out;
 			display: block;
 			visibility: hidden;
 			position: absolute;
-			bottom: 100%;
+			top: 100%;
 			left: 0;
 			right: 0;
 			z-index: 1000;
@@ -112,6 +110,7 @@
 			max-width: 300px;
 			margin-left: auto;
 			margin-right: auto;
+			margin-top: 0.5rem;
 		}
 
 		.nav-item.dropdown:hover .dropdown-menu {
@@ -312,17 +311,18 @@
 			}
 
 			.navbar {
-				height: 60px;
+				height: 50px;
+				padding: 0.25rem 0;
 			}
 
 			.navbar-brand img {
-				height: 60px;
-				max-width: 180px;
+				height: 40px;
+				max-width: 120px;
 			}
 
 			.nav-link {
 				padding: 0 1rem !important;
-				font-size: 1.2rem;
+				font-size: 1rem;
 			}
 
 			.navbar-nav {
@@ -331,7 +331,8 @@
 
 			.dropdown-menu {
 				background: var(--cs-white);
-				border-bottom: 1px solid var(--cs-grey-300);
+				border-radius: 5px;
+				box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 				min-width: 180px;
 			}
 
