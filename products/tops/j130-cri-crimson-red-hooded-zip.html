@@ -104,8 +104,7 @@
 
         .nav-arrow {
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
+            bottom: 20px;
             background-color: rgba(0, 0, 0, 0.5);
             color: white;
             border: none;
@@ -116,7 +115,7 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
             z-index: 2;
         }
 
@@ -125,11 +124,15 @@
         }
 
         .nav-arrow.prev {
-            left: 10px;
+            left: 20px;
         }
 
         .nav-arrow.next {
-            right: 10px;
+            right: 20px;
+        }
+
+        .nav-arrow.hidden {
+            display: none;
         }
 
         .nav-arrow i {
@@ -463,6 +466,7 @@
         function updateMainImage(src) {
             document.querySelector('.product-image').src = src;
             currentImageIndex = images.indexOf(src);
+            updateArrowVisibility();
         }
 
         function navigateImages(direction) {
@@ -470,11 +474,24 @@
             updateMainImage(images[currentImageIndex]);
         }
 
+        function updateArrowVisibility() {
+            const prevArrow = document.querySelector('.nav-arrow.prev');
+            const nextArrow = document.querySelector('.nav-arrow.next');
+            
+            prevArrow.classList.toggle('hidden', currentImageIndex === 0);
+            nextArrow.classList.toggle('hidden', currentImageIndex === images.length - 1);
+        }
+
+        // Initialize arrow visibility
+        document.addEventListener('DOMContentLoaded', function() {
+            updateArrowVisibility();
+        });
+
         // Add keyboard navigation
         document.addEventListener('keydown', function(event) {
-            if (event.key === 'ArrowLeft') {
+            if (event.key === 'ArrowLeft' && currentImageIndex > 0) {
                 navigateImages(-1);
-            } else if (event.key === 'ArrowRight') {
+            } else if (event.key === 'ArrowRight' && currentImageIndex < images.length - 1) {
                 navigateImages(1);
             }
         });
