@@ -106,7 +106,7 @@
         .nav-arrow {
             position: absolute;
             bottom: 0;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.2);
             color: white;
             border: none;
             width: 50px;
@@ -121,7 +121,7 @@
         }
 
         .nav-arrow:hover {
-            background-color: var(--cs-black);
+            background-color: rgba(0, 0, 0, 0.5);
         }
 
         .nav-arrow.prev {
@@ -142,6 +142,12 @@
             object-fit: cover;
             display: block;
             max-width: 100%;
+        }
+
+        .product-info {
+            position: sticky;
+            top: 120px;
+            height: fit-content;
         }
 
         .product-info h1 {
@@ -288,6 +294,9 @@
             }
             .thumbnail-grid {
                 gap: 0.5rem;
+            }
+            .product-info {
+                position: static;
             }
             .product-info h1 {
                 display: none;
