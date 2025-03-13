@@ -286,8 +286,8 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" href="index.html">Home</a>
                     </li>
@@ -298,15 +298,26 @@
                         <a class="nav-link" href="blog.html">Blog</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="productsDropdown" role="button" data-bs-toggle="dropdown">
                             Products
                         </a>
-                        <ul class="dropdown-menu bg-dark">
-                            <li><a class="dropdown-item text-light" href="products.html#repair">Repair Services</a></li>
-                            <li><a class="dropdown-item text-light" href="products.html#tops">Tops</a></li>
-                            <li><a class="dropdown-item text-light" href="products.html#bottoms">Bottoms</a></li>
-                            <li><a class="dropdown-item text-light" href="products.html#gold">Gold Jewelry</a></li>
-                            <li><a class="dropdown-item text-light" href="products.html#silver">Silver Jewelry</a></li>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="products/tops/tops.html">Tops</a></li>
+                            <li><a class="dropdown-item" href="products/bottoms/bottoms.html">Bottoms</a></li>
+                            <li><a class="dropdown-item" href="products/gold/gold.html">Gold</a></li>
+                            <li><a class="dropdown-item" href="products/silver/silver.html">Silver</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="services.html">Services</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown">
+                            Service Details
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="services/repair.html">Repairs</a></li>
+                            <li><a class="dropdown-item" href="services/consignment.html">Consignment</a></li>
                         </ul>
                     </li>
                 </ul>
