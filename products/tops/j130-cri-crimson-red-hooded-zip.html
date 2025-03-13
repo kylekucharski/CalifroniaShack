@@ -83,6 +83,10 @@
             padding: 3rem 0;
         }
 
+        .mobile-title {
+            display: none;
+        }
+
         .product-images {
             position: relative;
             margin-bottom: 2rem;
@@ -173,11 +177,21 @@
             transition: all 0.3s ease;
             width: 100%;
             margin-top: 2rem;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            display: none;
         }
 
         .btn-primary:hover {
             background-color: var(--cs-grey-900);
             transform: translateY(-2px);
+        }
+
+        .desktop-cart-button {
+            width: 100%;
+            margin-top: 2rem;
         }
 
         footer {
@@ -236,7 +250,14 @@
                 gap: 0.5rem;
             }
             .product-info h1 {
+                display: none;
+            }
+            .mobile-title {
+                display: block;
+                font-weight: 800;
+                margin-bottom: 1.5rem;
                 font-size: 1.5rem;
+                text-align: center;
             }
             .navbar {
                 height: 80px;
@@ -244,6 +265,17 @@
             }
             .hero {
                 margin-top: 80px;
+            }
+            .product-detail {
+                margin-bottom: 80px;
+            }
+            .btn-primary {
+                display: block;
+                margin: 0;
+                border-radius: 0;
+            }
+            .desktop-cart-button {
+                display: none;
             }
         }
     </style>
@@ -296,6 +328,7 @@
 
     <main class="product-detail">
         <div class="container">
+            <h1 class="mobile-title">J130 CRI Crimson Red Hooded Zip</h1>
             <div class="row">
                 <div class="col-md-7">
                     <div class="product-images">
@@ -306,6 +339,7 @@
                             <img src="../../Assets/tops/j130_crimson/j97_cri_d.jpg" alt="J130 CRI Crimson Red Hooded Zip Detail View" class="thumbnail" onclick="updateMainImage(this.src)">
                             <img src="../../Assets/tops/j130_crimson/j97_cri_t.jpg" alt="J130 CRI Crimson Red Hooded Zip Tag View" class="thumbnail" onclick="updateMainImage(this.src)">
                         </div>
+                        <button class="btn btn-primary desktop-cart-button">Add to Cart</button>
                     </div>
                 </div>
                 <div class="col-md-5">
