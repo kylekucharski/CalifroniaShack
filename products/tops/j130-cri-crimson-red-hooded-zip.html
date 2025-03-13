@@ -223,16 +223,20 @@
             transition: all 0.3s ease;
             width: 100%;
             margin-top: 2rem;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            z-index: 1000;
-            display: none;
         }
 
         .btn-primary:hover {
             background-color: var(--cs-grey-900);
             transform: translateY(-2px);
+        }
+
+        .mobile-cart-button {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            display: none;
+            margin: 0;
         }
 
         .desktop-cart-button {
@@ -318,10 +322,8 @@
             .product-detail {
                 margin-bottom: 80px;
             }
-            .btn-primary {
+            .mobile-cart-button {
                 display: block;
-                margin: 0;
-                border-radius: 0;
             }
             .desktop-cart-button {
                 display: none;
@@ -439,7 +441,7 @@
                             <p>Excellent vintage condition. Minor wear consistent with age and use. No significant flaws or issues.</p>
                         </div>
 
-                        <button class="btn btn-primary">Add to Cart</button>
+                        <button class="btn btn-primary desktop-cart-button">Add to Cart</button>
                     </div>
                 </div>
             </div>
