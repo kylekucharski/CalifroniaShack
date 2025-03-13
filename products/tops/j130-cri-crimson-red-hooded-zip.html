@@ -89,13 +89,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 100%;
         }
 
         .product-image {
-            width: 400px;
-            height: 400px;
+            width: 600px;
+            height: 600px;
             object-fit: cover;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             max-width: 100%;
         }
 
@@ -201,21 +202,25 @@
             color: var(--cs-black);
         }
 
-        .thumbnail-row {
-            display: flex;
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 1rem;
-            margin-top: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
+            width: 100%;
+            max-width: 600px;
         }
 
         .thumbnail {
-            width: 100px;
-            height: 100px;
+            width: 100%;
+            aspect-ratio: 1/1;
             object-fit: cover;
             cursor: pointer;
             border: 2px solid transparent;
             transition: border-color 0.3s ease;
+        }
+
+        .thumbnail:hover {
+            border-color: var(--cs-black);
         }
 
         @media (max-width: 768px) {
@@ -226,6 +231,9 @@
                 width: 100%;
                 height: auto;
                 aspect-ratio: 1/1;
+            }
+            .thumbnail-grid {
+                gap: 0.5rem;
             }
             .product-info h1 {
                 font-size: 1.5rem;
@@ -292,19 +300,11 @@
                 <div class="col-md-7">
                     <div class="product-images">
                         <img src="../../Assets/tops/j130_crimson/j97_cri_f.jpg" alt="J130 CRI Crimson Red Hooded Zip Front View" class="product-image">
-                        <div class="row mt-3">
-                            <div class="col-3">
-                                <img src="../../Assets/tops/j130_crimson/j97_cri_f.jpg" alt="J130 CRI Crimson Red Hooded Zip Front View" class="img-fluid mb-2" onclick="updateMainImage(this.src)">
-                            </div>
-                            <div class="col-3">
-                                <img src="../../Assets/tops/j130_crimson/j97_cri_b.jpg" alt="J130 CRI Crimson Red Hooded Zip Back View" class="img-fluid mb-2" onclick="updateMainImage(this.src)">
-                            </div>
-                            <div class="col-3">
-                                <img src="../../Assets/tops/j130_crimson/j97_cri_d.jpg" alt="J130 CRI Crimson Red Hooded Zip Detail View" class="img-fluid mb-2" onclick="updateMainImage(this.src)">
-                            </div>
-                            <div class="col-3">
-                                <img src="../../Assets/tops/j130_crimson/j97_cri_t.jpg" alt="J130 CRI Crimson Red Hooded Zip Tag View" class="img-fluid mb-2" onclick="updateMainImage(this.src)">
-                            </div>
+                        <div class="thumbnail-grid">
+                            <img src="../../Assets/tops/j130_crimson/j97_cri_f.jpg" alt="J130 CRI Crimson Red Hooded Zip Front View" class="thumbnail" onclick="updateMainImage(this.src)">
+                            <img src="../../Assets/tops/j130_crimson/j97_cri_b.jpg" alt="J130 CRI Crimson Red Hooded Zip Back View" class="thumbnail" onclick="updateMainImage(this.src)">
+                            <img src="../../Assets/tops/j130_crimson/j97_cri_d.jpg" alt="J130 CRI Crimson Red Hooded Zip Detail View" class="thumbnail" onclick="updateMainImage(this.src)">
+                            <img src="../../Assets/tops/j130_crimson/j97_cri_t.jpg" alt="J130 CRI Crimson Red Hooded Zip Tag View" class="thumbnail" onclick="updateMainImage(this.src)">
                         </div>
                     </div>
                 </div>
