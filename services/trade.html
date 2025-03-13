@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consignment Services - CaliforniaShack</title>
+    <title>Trade Your Items - CaliforniaShack</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts -->
@@ -59,12 +59,28 @@
             color: var(--cs-grey-600) !important;
         }
 
-        .consignment-section {
+        .dropdown-menu {
+            border: 1px solid var(--cs-grey-200);
+            border-radius: 0;
+            padding: 0.5rem 0;
+        }
+
+        .dropdown-item {
+            font-weight: 500;
+            padding: 0.5rem 1.5rem;
+            color: var(--cs-grey-900);
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--cs-grey-100);
+        }
+
+        .trade-section {
             margin-top: 76px;
             padding: 4rem 0;
         }
 
-        .consignment-content {
+        .trade-content {
             max-width: 800px;
             margin: 0 auto;
             text-align: center;
@@ -74,27 +90,6 @@
             font-weight: 800;
             margin-bottom: 2rem;
             font-size: 2.5rem;
-        }
-
-        .service-features {
-            list-style: none;
-            padding: 0;
-            margin: 2rem 0;
-            text-align: left;
-        }
-
-        .service-features li {
-            margin-bottom: 1rem;
-            padding-left: 2rem;
-            position: relative;
-        }
-
-        .service-features li:before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: var(--cs-black);
-            font-weight: bold;
         }
 
         .btn-primary {
@@ -111,16 +106,6 @@
         .btn-primary:hover {
             background-color: var(--cs-grey-900);
             transform: translateY(-2px);
-        }
-
-        .commission-table {
-            margin: 2rem auto;
-            max-width: 600px;
-        }
-
-        .commission-table th {
-            background-color: var(--cs-grey-100);
-            font-weight: 600;
         }
 
         footer {
@@ -185,9 +170,9 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="repair.html">Repairs</a></li>
-                            <li><a class="dropdown-item" href="trade.html">Trade</a></li>
+                            <li><a class="dropdown-item active" href="trade.html">Trade</a></li>
                             <li><a class="dropdown-item" href="sell.html">Sell</a></li>
-                            <li><a class="dropdown-item active" href="consignment.html">Consignment</a></li>
+                            <li><a class="dropdown-item" href="consignment.html">Consignment</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -195,76 +180,14 @@
         </div>
     </nav>
 
-    <main class="consignment-section">
+    <main class="trade-section">
         <div class="container">
-            <div class="consignment-content">
-                <h1>Consignment Services</h1>
-                <p class="lead mb-4">Turn your quality items into cash. We specialize in high-end clothing and jewelry consignment, ensuring you get the best value for your pieces.</p>
+            <div class="trade-content">
+                <h1>Trade Your Items</h1>
+                <p class="lead mb-4">Looking to trade your vintage or Y2K-style items? CaliforniaShack offers fair trade values for high-quality clothing and accessories. Get more value for your items through our trade program!</p>
                 
-                <div class="row mt-5">
-                    <div class="col-md-6">
-                        <h3>Clothing Consignment</h3>
-                        <ul class="service-features">
-                            <li>Designer and luxury brands</li>
-                            <li>Current styles (within 2 years)</li>
-                            <li>Seasonal collections</li>
-                            <li>Vintage pieces</li>
-                            <li>Accessories and handbags</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <h3>Jewelry Consignment</h3>
-                        <ul class="service-features">
-                            <li>Fine jewelry</li>
-                            <li>Gold and silver pieces</li>
-                            <li>Designer collections</li>
-                            <li>Vintage jewelry</li>
-                            <li>Luxury watches</li>
-                        </ul>
-                    </div>
-                </div>
-
                 <div class="mt-5">
-                    <h3>Commission Rates</h3>
-                    <table class="table commission-table">
-                        <thead>
-                            <tr>
-                                <th>Sale Price</th>
-                                <th>Your Commission</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Up to $100</td>
-                                <td>50%</td>
-                            </tr>
-                            <tr>
-                                <td>$101 - $500</td>
-                                <td>60%</td>
-                            </tr>
-                            <tr>
-                                <td>$501 - $1000</td>
-                                <td>70%</td>
-                            </tr>
-                            <tr>
-                                <td>$1001+</td>
-                                <td>75%</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="mt-5">
-                    <h3>Our Process</h3>
-                    <p>1. Schedule an appointment for item evaluation</p>
-                    <p>2. Our experts assess your items' value</p>
-                    <p>3. Sign consignment agreement</p>
-                    <p>4. Items are professionally photographed and listed</p>
-                    <p>5. Receive payment when your items sell</p>
-                </div>
-
-                <div class="mt-5">
-                    <a href="#" class="btn btn-primary">Start Consignment</a>
+                    <a href="#" class="btn btn-primary">Start Trading</a>
                 </div>
             </div>
         </div>
@@ -286,4 +209,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
-</html>
+</html> 
