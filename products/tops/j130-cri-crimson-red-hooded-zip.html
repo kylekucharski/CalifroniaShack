@@ -86,6 +86,9 @@
         .product-images {
             position: relative;
             margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .product-image {
@@ -93,6 +96,7 @@
             height: 400px;
             object-fit: cover;
             margin-bottom: 1rem;
+            max-width: 100%;
         }
 
         .product-info h1 {
@@ -201,6 +205,8 @@
             display: flex;
             gap: 1rem;
             margin-top: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .thumbnail {
@@ -217,7 +223,9 @@
                 height: 60px;
             }
             .product-image {
-                height: 400px;
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1/1;
             }
             .product-info h1 {
                 font-size: 1.5rem;
