@@ -459,77 +459,53 @@
         }
 
         function saveListing(html, title, category) {
+            // Create the product HTML file for download
             const filename = title.toLowerCase().replace(/\s+/g, '-') + '.html';
-            const categoryPath = `products/${category}/${filename}`;
+            downloadFile(html, filename);
             
-            // Create a Blob with the HTML content
-            const blob = new Blob([html], { type: 'text/html' });
+            // Create a temporary element to parse the category page
+            const parser = new DOMParser();
+            const categoryPageUrl = `products/${category}/${category}.html`;
             
-            // Create a FormData object
-            const formData = new FormData();
-            formData.append('file', blob, filename);
-            formData.append('category', category);
+            // Generate the new product card HTML
+            const productCard = `
+                <div class="col-md-4 mb-4">
+                    <a href="${filename}" class="product-card">
+                        <img src="https://placehold.co/400x400" alt="${title}">
+                        <div class="product-info">
+                            <h2 class="product-name">${title}</h2>
+                            <div class="product-price">$${document.getElementById('price').value}</div>
+                        </div>
+                    </a>
+                </div>`;
             
-            // Send the file to the server
-            fetch('/save-listing', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showAlert('successAlert');
-                    // Update the category page to include the new listing
-                    updateCategoryPage(category, title, filename);
-                } else {
-                    throw new Error(data.message || 'Error saving listing');
-                }
-            })
-            .catch(error => {
-                console.error('Error saving listing:', error);
-                showAlert('errorAlert');
-            });
+            // Show success message
+            showAlert('successAlert');
+            
+            // Show instructions to the user
+            const instructions = document.createElement('div');
+            instructions.className = 'alert alert-info mt-3';
+            instructions.innerHTML = `
+                <h5>Next Steps:</h5>
+                <ol>
+                    <li>Save the generated product file (${filename}) in the products/${category}/ directory</li>
+                    <li>Add the following code to ${category}.html just before the closing &lt;/div&gt; tag of the row:</li>
+                    <pre><code>${productCard}</code></pre>
+                </ol>`;
+            
+            document.getElementById('generatedCode').appendChild(instructions);
         }
 
-        function updateCategoryPage(category, title, filename) {
-            // Read the category page
-            fetch(`products/${category}/${category}.html`)
-                .then(response => response.text())
-                .then(html => {
-                    // Create a new product card
-                    const productCard = `
-                        <div class="col-md-4 mb-4">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">${title}</h5>
-                                    <a href="${filename}" class="btn btn-primary">View Details</a>
-                                </div>
-                            </div>
-                        </div>`;
-
-                    // Insert the new product card before the closing row div
-                    const updatedHtml = html.replace('</div><!-- end row -->', productCard + '\n            </div><!-- end row -->');
-
-                    // Save the updated category page
-                    const formData = new FormData();
-                    formData.append('file', new Blob([updatedHtml], { type: 'text/html' }), `${category}.html`);
-                    formData.append('category', category);
-
-                    return fetch('/save-category', {
-                        method: 'POST',
-                        body: formData
-                    });
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (!data.success) {
-                        throw new Error(data.message || 'Error updating category page');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error updating category page:', error);
-                    alert('The listing was saved but there was an error updating the category page. Please update it manually.');
-                });
+        function downloadFile(content, filename) {
+            const blob = new Blob([content], { type: 'text/html' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
         }
     </script>
 </body>
