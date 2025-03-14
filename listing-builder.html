@@ -470,8 +470,10 @@
                     for (let i = 0; i < imageUpload.files.length; i++) {
                         const file = imageUpload.files[i];
                         const formData = new FormData();
+                        const imagePath = `${categoryPath}/images/${filename.replace('.html', '')}-${i+1}.jpg`;
+                        
                         formData.append('image', file);
-                        formData.append('path', `${categoryPath}/images/${filename.replace('.html', '')}-${i+1}.jpg`);
+                        formData.append('path', imagePath);
                         
                         const imageResponse = await fetch('/api/upload-image', {
                             method: 'POST',
@@ -479,7 +481,8 @@
                         });
                         
                         if (!imageResponse.ok) {
-                            throw new Error('Failed to upload image');
+                            const errorData = await imageResponse.json();
+                            throw new Error(errorData.error || 'Failed to upload image');
                         }
                         
                         const imageResult = await imageResponse.json();

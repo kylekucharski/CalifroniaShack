@@ -8,7 +8,8 @@ const port = 3000;
 // Configure multer for handling file uploads
 const storage = multer.diskStorage({
     destination: async function (req, file, cb) {
-        const uploadPath = path.dirname(req.body.path);
+        // Default to 'uploads' directory if no path specified
+        const uploadPath = req.body.path ? path.dirname(req.body.path) : 'uploads';
         try {
             await fs.mkdir(uploadPath, { recursive: true });
             cb(null, uploadPath);
@@ -17,7 +18,9 @@ const storage = multer.diskStorage({
         }
     },
     filename: function (req, file, cb) {
-        cb(null, path.basename(req.body.path));
+        // Use original filename if no path specified
+        const filename = req.body.path ? path.basename(req.body.path) : file.originalname;
+        cb(null, filename);
     }
 });
 
@@ -36,9 +39,11 @@ app.post('/api/upload-image', upload.single('image'), async (req, res) => {
             throw new Error('No file uploaded');
         }
         
+        const filePath = req.body.path || path.join('uploads', req.file.filename);
+        
         res.json({
             success: true,
-            path: req.body.path
+            path: filePath
         });
     } catch (error) {
         console.error('Error uploading image:', error);
