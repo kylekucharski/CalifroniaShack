@@ -777,7 +777,7 @@
                             <button class="nav-arrow prev" onclick="prevImage()" ${imageUrls.length > 1 ? '' : 'style="display:none"'}>
                                 <i class="fas fa-chevron-left"></i>
                             </button>
-                            <img src="${imageUrls[0]}" class="product-image" alt="${title}" id="mainImage">
+                            <img src="../${imageUrls[0].split('/').slice(-2).join('/')}" class="product-image" alt="${title}" id="mainImage">
                             <button class="nav-arrow next" onclick="nextImage()" ${imageUrls.length > 1 ? '' : 'style="display:none"'}>
                                 <i class="fas fa-chevron-right"></i>
                             </button>
@@ -786,14 +786,14 @@
                         <div class="image-thumbnails">
                             ${imageUrls.map((url, index) => `
                                 <div class="thumbnail" onclick="changeImage(${index})">
-                                    <img src="${url}" alt="${title}">
+                                    <img src="../${url.split('/').slice(-2).join('/')}" alt="${title}">
                                 </div>
                             `).join('')}
                         </div>
                         ` : ''}
                     </div>
                     <script>
-                        const images = ${JSON.stringify(imageUrls)};
+                        const images = ${JSON.stringify(imageUrls.map(url => '../' + url.split('/').slice(-2).join('/')))};
                         let currentImageIndex = 0;
 
                         function changeImage(index) {
@@ -836,7 +836,7 @@
                 const productCard = `
                     <div class="col-md-4 mb-4">
                         <a href="${filename}" class="product-card">
-                            <img src="${imageUrls[0] || 'https://placehold.co/400x400'}" alt="${title}">
+                            <img src="images/${filename.replace('.html', '')}-1.jpg" alt="${title}">
                             <div class="product-info">
                                 <h2 class="product-name">${title}</h2>
                                 <div class="product-price">$${document.getElementById('price').value}</div>
