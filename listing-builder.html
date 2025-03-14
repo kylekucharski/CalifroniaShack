@@ -462,6 +462,52 @@
             const categoryPath = `products/${category}`;
             
             try {
+                // Handle image uploads first
+                const imageUpload = document.getElementById('imageUpload');
+                const imageUrls = [];
+                
+                if (imageUpload.files.length > 0) {
+                    for (let i = 0; i < imageUpload.files.length; i++) {
+                        const file = imageUpload.files[i];
+                        const formData = new FormData();
+                        formData.append('image', file);
+                        formData.append('path', `${categoryPath}/images/${filename.replace('.html', '')}-${i+1}.jpg`);
+                        
+                        const imageResponse = await fetch('/api/upload-image', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        
+                        if (!imageResponse.ok) {
+                            throw new Error('Failed to upload image');
+                        }
+                        
+                        const imageResult = await imageResponse.json();
+                        imageUrls.push(imageResult.path);
+                    }
+                }
+
+                // Update the HTML with the image gallery
+                const imageGalleryHtml = imageUrls.length > 0 ? `
+                    <div class="product-images">
+                        <div class="main-image mb-3">
+                            <img src="${imageUrls[0]}" class="img-fluid" alt="${title}">
+                        </div>
+                        ${imageUrls.length > 1 ? `
+                        <div class="image-thumbnails d-flex gap-2">
+                            ${imageUrls.map(url => `
+                                <div class="thumbnail" style="width: 80px; cursor: pointer;">
+                                    <img src="${url}" class="img-fluid" alt="${title}" onclick="document.querySelector('.main-image img').src = this.src">
+                                </div>
+                            `).join('')}
+                        </div>
+                        ` : ''}
+                    </div>
+                ` : '<!-- Images will be added here -->';
+
+                // Update the HTML content with the image gallery
+                html = html.replace('<!-- Images will be added here -->', imageGalleryHtml);
+
                 // Save the new product file
                 const productResponse = await fetch('/api/save-file', {
                     method: 'POST',
@@ -482,7 +528,7 @@
                 const productCard = `
                     <div class="col-md-4 mb-4">
                         <a href="${filename}" class="product-card">
-                            <img src="https://placehold.co/400x400" alt="${title}">
+                            <img src="${imageUrls[0] || 'https://placehold.co/400x400'}" alt="${title}">
                             <div class="product-info">
                                 <h2 class="product-name">${title}</h2>
                                 <div class="product-price">$${document.getElementById('price').value}</div>

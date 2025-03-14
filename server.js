@@ -1,14 +1,50 @@
 const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
+const multer = require('multer');
 const app = express();
 const port = 3000;
+
+// Configure multer for handling file uploads
+const storage = multer.diskStorage({
+    destination: async function (req, file, cb) {
+        const uploadPath = path.dirname(req.body.path);
+        try {
+            await fs.mkdir(uploadPath, { recursive: true });
+            cb(null, uploadPath);
+        } catch (error) {
+            cb(error);
+        }
+    },
+    filename: function (req, file, cb) {
+        cb(null, path.basename(req.body.path));
+    }
+});
+
+const upload = multer({ storage: storage });
 
 // Middleware to parse JSON bodies
 app.use(express.json());
 
 // Serve static files from the root directory
 app.use(express.static(__dirname));
+
+// Handle image uploads
+app.post('/api/upload-image', upload.single('image'), async (req, res) => {
+    try {
+        if (!req.file) {
+            throw new Error('No file uploaded');
+        }
+        
+        res.json({
+            success: true,
+            path: req.body.path
+        });
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
 
 // Save a new file
 app.post('/api/save-file', async (req, res) => {
