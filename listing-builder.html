@@ -750,7 +750,7 @@
                     for (let i = 0; i < imageUpload.files.length; i++) {
                         const file = imageUpload.files[i];
                         const formData = new FormData();
-                        const imagePath = `${categoryPath}/images/${filename.replace('.html', '')}-${i+1}.jpg`;
+                        const imagePath = `products/${category}/images/${filename.replace('.html', '')}-${i+1}${path.extname(file.name)}`;
                         
                         formData.append('image', file);
                         formData.append('path', imagePath);
@@ -769,6 +769,9 @@
                         imageUrls.push(imageResult.path);
                     }
                 }
+
+                // Generate the HTML content
+                let html = generateHTML(title, category, condition, measurementsList, price, notesSection);
 
                 // Update the HTML with the image gallery
                 const imageGalleryHtml = imageUrls.length > 0 
@@ -823,7 +826,7 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        path: `${categoryPath}/${filename}`,
+                        path: `products/${category}/${filename}`,
                         content: html
                     })
                 });
@@ -836,7 +839,7 @@
                 const productCard = `
                     <div class="col-md-4 mb-4">
                         <a href="${filename}" class="product-card">
-                            <img src="images/${filename.replace('.html', '')}-1.jpg" alt="${title}">
+                            <img src="images/${filename.replace('.html', '')}-1${path.extname(imageUpload.files[0].name)}" alt="${title}">
                             <div class="product-info">
                                 <h2 class="product-name">${title}</h2>
                                 <div class="product-price">$${document.getElementById('price').value}</div>
@@ -851,7 +854,7 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        category: category,
+                        path: `products/${category}/${category}.html`,
                         productCard: productCard
                     })
                 });

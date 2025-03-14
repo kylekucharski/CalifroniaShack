@@ -8,9 +8,9 @@ const port = 3000;
 // Configure multer for handling file uploads
 const storage = multer.diskStorage({
     destination: async function (req, file, cb) {
-        // Default to 'uploads' directory if no path specified
-        const uploadPath = req.body.path ? path.dirname(req.body.path) : 'uploads';
         try {
+            const uploadPath = req.body.path ? path.dirname(req.body.path) : 'uploads';
+            // Create all directories in the path
             await fs.mkdir(uploadPath, { recursive: true });
             cb(null, uploadPath);
         } catch (error) {
@@ -18,7 +18,6 @@ const storage = multer.diskStorage({
         }
     },
     filename: function (req, file, cb) {
-        // Use original filename if no path specified
         const filename = req.body.path ? path.basename(req.body.path) : file.originalname;
         cb(null, filename);
     }
@@ -38,12 +37,9 @@ app.post('/api/upload-image', upload.single('image'), async (req, res) => {
         if (!req.file) {
             throw new Error('No file uploaded');
         }
-        
-        const filePath = req.body.path || path.join('uploads', req.file.filename);
-        
         res.json({
             success: true,
-            path: filePath
+            path: req.body.path || path.join('uploads', req.file.filename)
         });
     } catch (error) {
         console.error('Error uploading image:', error);
@@ -51,17 +47,17 @@ app.post('/api/upload-image', upload.single('image'), async (req, res) => {
     }
 });
 
-// Save a new file
+// Handle file saving
 app.post('/api/save-file', async (req, res) => {
     try {
         const { path: filePath, content } = req.body;
         
-        // Create directory if it doesn't exist
-        await fs.mkdir(path.dirname(filePath), { recursive: true });
+        // Create the directory if it doesn't exist
+        const dir = path.dirname(filePath);
+        await fs.mkdir(dir, { recursive: true });
         
         // Write the file
         await fs.writeFile(filePath, content);
-        
         res.json({ success: true });
     } catch (error) {
         console.error('Error saving file:', error);
@@ -69,30 +65,85 @@ app.post('/api/save-file', async (req, res) => {
     }
 });
 
-// Update category page
+// Handle category page updates
 app.post('/api/update-category', async (req, res) => {
     try {
-        const { category, productCard } = req.body;
-        const categoryPath = path.join(__dirname, 'products', category, `${category}.html`);
+        const { path: filePath, productCard } = req.body;
         
-        // Read the current category page
-        let content = await fs.readFile(categoryPath, 'utf8');
+        // Create the directory if it doesn't exist
+        const dir = path.dirname(filePath);
+        await fs.mkdir(dir, { recursive: true });
         
-        // Find the products grid and insert the new product card
-        const gridEndMarker = '</div><!-- end row -->';
-        const insertPosition = content.lastIndexOf(gridEndMarker);
-        
-        if (insertPosition === -1) {
-            throw new Error('Could not find products grid in category page');
+        // Read the current content or create a new file if it doesn't exist
+        let content;
+        try {
+            content = await fs.readFile(filePath, 'utf8');
+        } catch (error) {
+            // If file doesn't exist, create a new category page
+            content = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - CaliforniaShack</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            padding-top: 80px;
+        }
+        .product-grid {
+            padding: 2rem 0;
+        }
+        .product-card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .product-card img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="product-grid">
+            <div class="row" id="productContainer">
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>`;
         }
         
-        // Insert the new product card before the grid end marker
-        content = content.slice(0, insertPosition) + 
-                 `    ${productCard}\n        ` +
-                 content.slice(insertPosition);
+        // Find the product container div and insert the new product card
+        const containerStart = content.indexOf('<div class="row" id="productContainer">') + '<div class="row" id="productContainer">'.length;
+        const containerEnd = content.indexOf('</div>', containerStart);
         
-        // Write the updated content back
-        await fs.writeFile(categoryPath, content);
+        // Insert the new product card at the beginning of the container
+        const updatedContent = content.slice(0, containerStart) + '\n                ' + productCard + content.slice(containerStart);
+        
+        // Write the updated content back to the file
+        await fs.writeFile(filePath, updatedContent);
         
         res.json({ success: true });
     } catch (error) {
