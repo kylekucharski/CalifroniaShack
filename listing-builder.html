@@ -292,6 +292,11 @@
                 const price = document.getElementById('price').value;
                 const notes = document.getElementById('notes').value;
 
+                if (!category) {
+                    alert('Please select a category');
+                    return;
+                }
+
                 console.log('Generating listing with:', { title, category, condition, measurements, price, notes });
 
                 // Process measurements
@@ -323,6 +328,9 @@
                 if (generatedCode) {
                     generatedCode.style.display = 'block';
                 }
+
+                // Save the file in the corresponding category folder
+                saveListing(html, title, category);
 
                 console.log('Code generated successfully');
             } catch (error) {
@@ -448,6 +456,80 @@
             if (form) form.reset();
             if (preview) preview.innerHTML = '';
             if (generatedCode) generatedCode.style.display = 'none';
+        }
+
+        function saveListing(html, title, category) {
+            const filename = title.toLowerCase().replace(/\s+/g, '-') + '.html';
+            const categoryPath = `products/${category}/${filename}`;
+            
+            // Create a Blob with the HTML content
+            const blob = new Blob([html], { type: 'text/html' });
+            
+            // Create a FormData object
+            const formData = new FormData();
+            formData.append('file', blob, filename);
+            formData.append('category', category);
+            
+            // Send the file to the server
+            fetch('/save-listing', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showAlert('successAlert');
+                    // Update the category page to include the new listing
+                    updateCategoryPage(category, title, filename);
+                } else {
+                    throw new Error(data.message || 'Error saving listing');
+                }
+            })
+            .catch(error => {
+                console.error('Error saving listing:', error);
+                showAlert('errorAlert');
+            });
+        }
+
+        function updateCategoryPage(category, title, filename) {
+            // Read the category page
+            fetch(`products/${category}/${category}.html`)
+                .then(response => response.text())
+                .then(html => {
+                    // Create a new product card
+                    const productCard = `
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">${title}</h5>
+                                    <a href="${filename}" class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>`;
+
+                    // Insert the new product card before the closing row div
+                    const updatedHtml = html.replace('</div><!-- end row -->', productCard + '\n            </div><!-- end row -->');
+
+                    // Save the updated category page
+                    const formData = new FormData();
+                    formData.append('file', new Blob([updatedHtml], { type: 'text/html' }), `${category}.html`);
+                    formData.append('category', category);
+
+                    return fetch('/save-category', {
+                        method: 'POST',
+                        body: formData
+                    });
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
+                        throw new Error(data.message || 'Error updating category page');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating category page:', error);
+                    alert('The listing was saved but there was an error updating the category page. Please update it manually.');
+                });
         }
     </script>
 </body>
