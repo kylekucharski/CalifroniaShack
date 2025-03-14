@@ -475,100 +475,48 @@
                 </div>`;
 
             try {
-                // First, get the GitHub token from localStorage or prompt the user
-                let githubToken = localStorage.getItem('github_token');
-                if (!githubToken) {
-                    githubToken = prompt('Please enter your GitHub Personal Access Token (needs repo access):');
-                    if (githubToken) {
-                        localStorage.setItem('github_token', githubToken);
-                    } else {
-                        throw new Error('GitHub token is required');
-                    }
+                // Save the new product file
+                const productResponse = await fetch('/api/save-file', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        path: `${categoryPath}/${filename}`,
+                        content: html
+                    })
+                });
+
+                if (!productResponse.ok) {
+                    throw new Error('Failed to save product file');
                 }
 
-                // GitHub API configuration
-                const owner = 'kylekucharski'; // Replace with your GitHub username
-                const repo = 'CaliforniaShack'; // Replace with your repository name
-                const apiBaseUrl = 'https://api.github.com';
-                const headers = {
-                    'Authorization': `token ${githubToken}`,
-                    'Accept': 'application/vnd.github.v3+json',
-                    'Content-Type': 'application/json',
-                };
-
-                // 1. Create the new product file
-                const productFilePath = `${categoryPath}/${filename}`;
-                await createOrUpdateFile(
-                    apiBaseUrl,
-                    owner,
-                    repo,
-                    productFilePath,
-                    html,
-                    `Add new product: ${title}`,
-                    headers
-                );
-
-                // 2. Update the category page
-                const categoryFilePath = `${categoryPath}/${category}.html`;
-                
-                // Get current category page content
-                const categoryResponse = await fetch(`${apiBaseUrl}/repos/${owner}/${repo}/contents/${categoryFilePath}`, {
-                    headers: headers
-                });
-                const categoryData = await categoryResponse.json();
-                const currentContent = atob(categoryData.content);
-                
-                // Insert the new product card
-                const updatedContent = currentContent.replace(
-                    '</div><!-- end row -->',
-                    `    ${productCard}\n        </div><!-- end row -->`
-                );
-
                 // Update the category page
-                await createOrUpdateFile(
-                    apiBaseUrl,
-                    owner,
-                    repo,
-                    categoryFilePath,
-                    updatedContent,
-                    `Update ${category} page: Add ${title}`,
-                    headers,
-                    categoryData.sha
-                );
+                const categoryResponse = await fetch('/api/update-category', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        category: category,
+                        productCard: productCard
+                    })
+                });
+
+                if (!categoryResponse.ok) {
+                    throw new Error('Failed to update category page');
+                }
 
                 showAlert('successAlert');
                 document.getElementById('successAlert').textContent = 'Product added successfully!';
+                
+                // Clear the form after successful save
+                clearForm();
             } catch (error) {
-                console.error('Error saving to GitHub:', error);
+                console.error('Error saving listing:', error);
                 showAlert('errorAlert');
                 document.getElementById('errorAlert').textContent = `Error: ${error.message}`;
             }
-        }
-
-        async function createOrUpdateFile(apiBaseUrl, owner, repo, path, content, message, headers, sha = null) {
-            const endpoint = `${apiBaseUrl}/repos/${owner}/${repo}/contents/${path}`;
-            const body = {
-                message: message,
-                content: btoa(content),
-                branch: 'main'
-            };
-            
-            if (sha) {
-                body.sha = sha;
-            }
-
-            const response = await fetch(endpoint, {
-                method: 'PUT',
-                headers: headers,
-                body: JSON.stringify(body)
-            });
-
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.message || 'Failed to save file to GitHub');
-            }
-
-            return response.json();
         }
     </script>
 </body>

@@ -1,53 +1,55 @@
 const express = require('express');
-const multer = require('multer');
-const path = require('path');
 const fs = require('fs').promises;
-
+const path = require('path');
 const app = express();
 const port = 3000;
+
+// Middleware to parse JSON bodies
+app.use(express.json());
 
 // Serve static files
 app.use(express.static('.'));
 
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        const category = req.body.category;
-        const dir = `products/${category}`;
-        fs.mkdir(dir, { recursive: true })
-            .then(() => cb(null, dir))
-            .catch(err => cb(err));
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname);
+// Save a new file
+app.post('/api/save-file', async (req, res) => {
+    try {
+        const { path: filePath, content } = req.body;
+        
+        // Create directory if it doesn't exist
+        await fs.mkdir(path.dirname(filePath), { recursive: true });
+        
+        // Write the file
+        await fs.writeFile(filePath, content);
+        
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error saving file:', error);
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
-const upload = multer({ storage: storage });
-
-// Handle listing file uploads
-app.post('/save-listing', upload.single('file'), async (req, res) => {
+// Update category page
+app.post('/api/update-category', async (req, res) => {
     try {
-        if (!req.file) {
-            throw new Error('No file uploaded');
-        }
+        const { category, productCard } = req.body;
+        const categoryPath = `products/${category}/${category}.html`;
+        
+        // Read the current category page
+        let content = await fs.readFile(categoryPath, 'utf8');
+        
+        // Insert the new product card
+        content = content.replace(
+            '</div><!-- end row -->',
+            `    ${productCard}\n        </div><!-- end row -->`
+        );
+        
+        // Write the updated content back
+        await fs.writeFile(categoryPath, content);
+        
         res.json({ success: true });
     } catch (error) {
-        console.error('Error saving listing:', error);
-        res.status(500).json({ success: false, message: error.message });
-    }
-});
-
-// Handle category page updates
-app.post('/save-category', upload.single('file'), async (req, res) => {
-    try {
-        if (!req.file) {
-            throw new Error('No file uploaded');
-        }
-        res.json({ success: true });
-    } catch (error) {
-        console.error('Error updating category page:', error);
-        res.status(500).json({ success: false, message: error.message });
+        console.error('Error updating category:', error);
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
