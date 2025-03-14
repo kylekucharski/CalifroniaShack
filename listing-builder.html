@@ -458,14 +458,9 @@
             if (generatedCode) generatedCode.style.display = 'none';
         }
 
-        function saveListing(html, title, category) {
-            // Create the product HTML file for download
+        async function saveListing(html, title, category) {
             const filename = title.toLowerCase().replace(/\s+/g, '-') + '.html';
-            downloadFile(html, filename);
-            
-            // Create a temporary element to parse the category page
-            const parser = new DOMParser();
-            const categoryPageUrl = `products/${category}/${category}.html`;
+            const categoryPath = `products/${category}`;
             
             // Generate the new product card HTML
             const productCard = `
@@ -478,34 +473,102 @@
                         </div>
                     </a>
                 </div>`;
-            
-            // Show success message
-            showAlert('successAlert');
-            
-            // Show instructions to the user
-            const instructions = document.createElement('div');
-            instructions.className = 'alert alert-info mt-3';
-            instructions.innerHTML = `
-                <h5>Next Steps:</h5>
-                <ol>
-                    <li>Save the generated product file (${filename}) in the products/${category}/ directory</li>
-                    <li>Add the following code to ${category}.html just before the closing &lt;/div&gt; tag of the row:</li>
-                    <pre><code>${productCard}</code></pre>
-                </ol>`;
-            
-            document.getElementById('generatedCode').appendChild(instructions);
+
+            try {
+                // First, get the GitHub token from localStorage or prompt the user
+                let githubToken = localStorage.getItem('github_token');
+                if (!githubToken) {
+                    githubToken = prompt('Please enter your GitHub Personal Access Token (needs repo access):');
+                    if (githubToken) {
+                        localStorage.setItem('github_token', githubToken);
+                    } else {
+                        throw new Error('GitHub token is required');
+                    }
+                }
+
+                // GitHub API configuration
+                const owner = 'kylekucharski'; // Replace with your GitHub username
+                const repo = 'CaliforniaShack'; // Replace with your repository name
+                const apiBaseUrl = 'https://api.github.com';
+                const headers = {
+                    'Authorization': `token ${githubToken}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json',
+                };
+
+                // 1. Create the new product file
+                const productFilePath = `${categoryPath}/${filename}`;
+                await createOrUpdateFile(
+                    apiBaseUrl,
+                    owner,
+                    repo,
+                    productFilePath,
+                    html,
+                    `Add new product: ${title}`,
+                    headers
+                );
+
+                // 2. Update the category page
+                const categoryFilePath = `${categoryPath}/${category}.html`;
+                
+                // Get current category page content
+                const categoryResponse = await fetch(`${apiBaseUrl}/repos/${owner}/${repo}/contents/${categoryFilePath}`, {
+                    headers: headers
+                });
+                const categoryData = await categoryResponse.json();
+                const currentContent = atob(categoryData.content);
+                
+                // Insert the new product card
+                const updatedContent = currentContent.replace(
+                    '</div><!-- end row -->',
+                    `    ${productCard}\n        </div><!-- end row -->`
+                );
+
+                // Update the category page
+                await createOrUpdateFile(
+                    apiBaseUrl,
+                    owner,
+                    repo,
+                    categoryFilePath,
+                    updatedContent,
+                    `Update ${category} page: Add ${title}`,
+                    headers,
+                    categoryData.sha
+                );
+
+                showAlert('successAlert');
+                document.getElementById('successAlert').textContent = 'Product added successfully!';
+            } catch (error) {
+                console.error('Error saving to GitHub:', error);
+                showAlert('errorAlert');
+                document.getElementById('errorAlert').textContent = `Error: ${error.message}`;
+            }
         }
 
-        function downloadFile(content, filename) {
-            const blob = new Blob([content], { type: 'text/html' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
+        async function createOrUpdateFile(apiBaseUrl, owner, repo, path, content, message, headers, sha = null) {
+            const endpoint = `${apiBaseUrl}/repos/${owner}/${repo}/contents/${path}`;
+            const body = {
+                message: message,
+                content: btoa(content),
+                branch: 'main'
+            };
+            
+            if (sha) {
+                body.sha = sha;
+            }
+
+            const response = await fetch(endpoint, {
+                method: 'PUT',
+                headers: headers,
+                body: JSON.stringify(body)
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Failed to save file to GitHub');
+            }
+
+            return response.json();
         }
     </script>
 </body>
