@@ -282,6 +282,22 @@
 
             try {
                 // Generate the HTML string
+                let measurementsList = '';
+                if (measurements) {
+                    measurementsList = measurements.split(',')
+                        .map(m => `<li>${m.trim()}</li>`)
+                        .join('');
+                }
+
+                let notesSection = '';
+                if (notes) {
+                    notesSection = `
+                        <div class="notes">
+                            <h3>Additional Notes</h3>
+                            <p>${notes}</p>
+                        </div>`;
+                }
+
                 const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -292,12 +308,35 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Your existing styles here */
-        body { font-family: 'Montserrat', sans-serif; }
-        .product-detail { margin-top: 106px; padding: 3rem 0; }
-        .product-info { position: sticky; top: 120px; }
-        .product-price { font-size: 2rem; font-weight: 700; }
-        .measurements-list { list-style: none; padding: 0; }
+        body { 
+            font-family: 'Montserrat', sans-serif;
+            padding-top: 80px;
+        }
+        .product-detail { 
+            margin-top: 106px; 
+            padding: 3rem 0; 
+        }
+        .product-info { 
+            position: sticky; 
+            top: 120px; 
+        }
+        .product-price { 
+            font-size: 2rem; 
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .measurements-list { 
+            list-style: none; 
+            padding: 0; 
+        }
+        .btn-primary {
+            background-color: #000;
+            border: none;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
@@ -318,27 +357,20 @@
                         <div class="measurements">
                             <h3>Measurements</h3>
                             <ul class="measurements-list">
-                                ${measurements.split(',').map(m => `<li>${m.trim()}</li>`).join('')}
+                                ${measurementsList}
                             </ul>
                         </div>
                         ` : ''}
-                        ${notes ? `
-                        <div class="notes">
-                            <h3>Additional Notes</h3>
-                            <p>${notes}</p>
-                        </div>
-                        ` : ''}
+                        ${notesSection}
                         <button class="btn btn-primary">Add to Cart</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"><\/script>
 </body>
 </html>`;
-
-                console.log('Generated HTML:', html);
 
                 // Display the generated code
                 const codeOutput = document.getElementById('codeOutput');
