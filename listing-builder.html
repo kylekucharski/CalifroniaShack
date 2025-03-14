@@ -435,7 +435,6 @@
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
         }
 
         function showAlert(alertId) {
@@ -462,18 +461,6 @@
             const filename = title.toLowerCase().replace(/\s+/g, '-') + '.html';
             const categoryPath = `products/${category}`;
             
-            // Generate the new product card HTML
-            const productCard = `
-                <div class="col-md-4 mb-4">
-                    <a href="${filename}" class="product-card">
-                        <img src="https://placehold.co/400x400" alt="${title}">
-                        <div class="product-info">
-                            <h2 class="product-name">${title}</h2>
-                            <div class="product-price">$${document.getElementById('price').value}</div>
-                        </div>
-                    </a>
-                </div>`;
-
             try {
                 // Save the new product file
                 const productResponse = await fetch('/api/save-file', {
@@ -490,6 +477,18 @@
                 if (!productResponse.ok) {
                     throw new Error('Failed to save product file');
                 }
+
+                // Generate the new product card HTML
+                const productCard = `
+                    <div class="col-md-4 mb-4">
+                        <a href="${filename}" class="product-card">
+                            <img src="https://placehold.co/400x400" alt="${title}">
+                            <div class="product-info">
+                                <h2 class="product-name">${title}</h2>
+                                <div class="product-price">$${document.getElementById('price').value}</div>
+                            </div>
+                        </a>
+                    </div>`;
 
                 // Update the category page
                 const categoryResponse = await fetch('/api/update-category', {

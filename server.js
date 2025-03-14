@@ -7,8 +7,8 @@ const port = 3000;
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-// Serve static files
-app.use(express.static('.'));
+// Serve static files from the root directory
+app.use(express.static(__dirname));
 
 // Save a new file
 app.post('/api/save-file', async (req, res) => {
@@ -32,16 +32,23 @@ app.post('/api/save-file', async (req, res) => {
 app.post('/api/update-category', async (req, res) => {
     try {
         const { category, productCard } = req.body;
-        const categoryPath = `products/${category}/${category}.html`;
+        const categoryPath = path.join(__dirname, 'products', category, `${category}.html`);
         
         // Read the current category page
         let content = await fs.readFile(categoryPath, 'utf8');
         
-        // Insert the new product card
-        content = content.replace(
-            '</div><!-- end row -->',
-            `    ${productCard}\n        </div><!-- end row -->`
-        );
+        // Find the products grid and insert the new product card
+        const gridEndMarker = '</div><!-- end row -->';
+        const insertPosition = content.lastIndexOf(gridEndMarker);
+        
+        if (insertPosition === -1) {
+            throw new Error('Could not find products grid in category page');
+        }
+        
+        // Insert the new product card before the grid end marker
+        content = content.slice(0, insertPosition) + 
+                 `    ${productCard}\n        ` +
+                 content.slice(insertPosition);
         
         // Write the updated content back
         await fs.writeFile(categoryPath, content);
@@ -53,6 +60,8 @@ app.post('/api/update-category', async (req, res) => {
     }
 });
 
+// Start the server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
+    console.log(`Open listing-builder.html in your browser to create new listings`);
 }); 
