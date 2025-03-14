@@ -242,9 +242,28 @@
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Image preview functionality
-        document.getElementById('imageUpload').addEventListener('change', function(e) {
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Image preview functionality
+            const imageUpload = document.getElementById('imageUpload');
+            if (imageUpload) {
+                imageUpload.addEventListener('change', handleImageUpload);
+            }
+
+            // Form submission
+            const listingForm = document.getElementById('listingForm');
+            if (listingForm) {
+                listingForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    generateListing();
+                });
+            }
+        });
+
+        function handleImageUpload(e) {
             const preview = document.getElementById('imagePreview');
+            if (!preview) return;
+            
             preview.innerHTML = '';
             
             Array.from(e.target.files).forEach(file => {
@@ -259,46 +278,61 @@
                         </button>
                     `;
                     preview.appendChild(div);
-                }
+                };
                 reader.readAsDataURL(file);
             });
-        });
-
-        // Form submission
-        document.getElementById('listingForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            generateListing();
-        });
+        }
 
         function generateListing() {
-            const title = document.getElementById('productTitle').value;
-            const category = document.getElementById('category').value;
-            const condition = document.getElementById('condition').value;
-            const measurements = document.getElementById('measurements').value;
-            const price = document.getElementById('price').value;
-            const notes = document.getElementById('notes').value;
-
-            console.log('Generating listing with:', { title, category, condition, measurements, price, notes });
-
             try {
-                // Generate the HTML string
-                let measurementsList = '';
-                if (measurements) {
-                    measurementsList = measurements.split(',')
+                const title = document.getElementById('productTitle').value;
+                const category = document.getElementById('category').value;
+                const condition = document.getElementById('condition').value;
+                const measurements = document.getElementById('measurements').value;
+                const price = document.getElementById('price').value;
+                const notes = document.getElementById('notes').value;
+
+                console.log('Generating listing with:', { title, category, condition, measurements, price, notes });
+
+                // Process measurements
+                const measurementsList = measurements 
+                    ? measurements.split(',')
                         .map(m => `<li>${m.trim()}</li>`)
-                        .join('');
+                        .join('\n') 
+                    : '';
+
+                // Process notes
+                const notesSection = notes 
+                    ? `<div class="notes">
+                        <h3>Additional Notes</h3>
+                        <p>${notes}</p>
+                    </div>` 
+                    : '';
+
+                // Generate HTML
+                const html = generateHTML(title, category, condition, measurementsList, price, notesSection);
+
+                // Display the generated code
+                const codeOutput = document.getElementById('codeOutput');
+                if (codeOutput) {
+                    codeOutput.textContent = html;
+                }
+                
+                // Show the generated code section
+                const generatedCode = document.getElementById('generatedCode');
+                if (generatedCode) {
+                    generatedCode.style.display = 'block';
                 }
 
-                let notesSection = '';
-                if (notes) {
-                    notesSection = `
-                        <div class="notes">
-                            <h3>Additional Notes</h3>
-                            <p>${notes}</p>
-                        </div>`;
-                }
+                console.log('Code generated successfully');
+            } catch (error) {
+                console.error('Error generating listing:', error);
+                alert('Error generating listing. Please check the console for details.');
+            }
+        }
 
-                const html = `<!DOCTYPE html>
+        function generateHTML(title, category, condition, measurementsList, price, notesSection) {
+            return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -353,7 +387,7 @@
                         <h1>${title}</h1>
                         <div class="product-price">$${price}</div>
                         <div class="badge bg-secondary mb-3">${condition}</div>
-                        ${measurements ? `
+                        ${measurementsList ? `
                         <div class="measurements">
                             <h3>Measurements</h3>
                             <ul class="measurements-list">
@@ -371,38 +405,25 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"><\/script>
 </body>
 </html>`;
-
-                // Display the generated code
-                const codeOutput = document.getElementById('codeOutput');
-                codeOutput.textContent = html;
-                
-                // Show the generated code section
-                const generatedCode = document.getElementById('generatedCode');
-                generatedCode.style.display = 'block';
-
-                console.log('Code displayed successfully');
-            } catch (error) {
-                console.error('Error generating listing:', error);
-                alert('Error generating listing. Please check the console for details.');
-            }
         }
 
         function copyToClipboard() {
             const code = document.getElementById('codeOutput').textContent;
-            navigator.clipboard.writeText(code).then(() => {
-                showAlert('successAlert');
-            }).catch(() => {
-                showAlert('errorAlert');
-            });
+            navigator.clipboard.writeText(code)
+                .then(() => showAlert('successAlert'))
+                .catch(() => showAlert('errorAlert'));
         }
 
         function downloadHTML() {
             const code = document.getElementById('codeOutput').textContent;
+            const title = document.getElementById('productTitle').value;
+            const filename = title.toLowerCase().replace(/\s+/g, '-') + '.html';
+            
             const blob = new Blob([code], { type: 'text/html' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${document.getElementById('productTitle').value.toLowerCase().replace(/\s+/g, '-')}.html`;
+            a.download = filename;
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
@@ -411,18 +432,23 @@
 
         function showAlert(alertId) {
             const alert = document.getElementById(alertId);
-            alert.style.display = 'block';
-            setTimeout(() => {
-                alert.style.display = 'none';
-            }, 3000);
+            if (alert) {
+                alert.style.display = 'block';
+                setTimeout(() => {
+                    alert.style.display = 'none';
+                }, 3000);
+            }
         }
 
         function clearForm() {
-            document.getElementById('listingForm').reset();
-            document.getElementById('imagePreview').innerHTML = '';
-            document.getElementById('generatedCode').style.display = 'none';
+            const form = document.getElementById('listingForm');
+            const preview = document.getElementById('imagePreview');
+            const generatedCode = document.getElementById('generatedCode');
+            
+            if (form) form.reset();
+            if (preview) preview.innerHTML = '';
+            if (generatedCode) generatedCode.style.display = 'none';
         }
     </script>
 </body>
-
 </html> 
