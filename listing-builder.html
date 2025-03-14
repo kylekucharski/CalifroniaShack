@@ -192,36 +192,12 @@
 
                 <div class="mb-3">
                     <label for="condition" class="form-label">Condition</label>
-                    <select class="form-control" id="condition" required>
-                        <option value="">Select Condition</option>
-                        <option value="Excellent">Excellent</option>
-                        <option value="Very Good">Very Good</option>
-                        <option value="Good">Good</option>
-                        <option value="Fair">Fair</option>
-                        <option value="Poor">Poor</option>
-                    </select>
+                    <input type="text" class="form-control" id="condition" placeholder="Enter condition (e.g., Excellent, Worn, Like New)" required>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Measurements</label>
-                    <div class="measurements-grid">
-                        <div>
-                            <label for="chest" class="form-label">Chest (inches)</label>
-                            <input type="number" class="form-control" id="chest" step="0.5">
-                        </div>
-                        <div>
-                            <label for="length" class="form-label">Length (inches)</label>
-                            <input type="number" class="form-control" id="length" step="0.5">
-                        </div>
-                        <div>
-                            <label for="sleeve" class="form-label">Sleeve (inches)</label>
-                            <input type="number" class="form-control" id="sleeve" step="0.5">
-                        </div>
-                        <div>
-                            <label for="shoulder" class="form-label">Shoulder (inches)</label>
-                            <input type="number" class="form-control" id="shoulder" step="0.5">
-                        </div>
-                    </div>
+                    <label for="measurements" class="form-label">Measurements</label>
+                    <input type="text" class="form-control" id="measurements" placeholder="Enter measurements (e.g., Chest: 23&quot;, Length: 28&quot;, Sleeve: 26&quot;, Shoulder: 19&quot;)">
                 </div>
 
                 <div class="mb-3">
@@ -298,29 +274,19 @@
             const title = document.getElementById('productTitle').value;
             const category = document.getElementById('category').value;
             const condition = document.getElementById('condition').value;
+            const measurements = document.getElementById('measurements').value;
             const price = document.getElementById('price').value;
             const notes = document.getElementById('notes').value;
-            const measurements = {
-                chest: document.getElementById('chest').value,
-                length: document.getElementById('length').value,
-                sleeve: document.getElementById('sleeve').value,
-                shoulder: document.getElementById('shoulder').value
-            };
 
             // Generate HTML code
-            const html = generateProductHTML(title, category, condition, price, notes, measurements);
+            const html = generateProductHTML(title, category, condition, measurements, price, notes);
             
             // Display generated code
             document.getElementById('codeOutput').textContent = html;
             document.getElementById('generatedCode').style.display = 'block';
         }
 
-        function generateProductHTML(title, category, condition, price, notes, measurements) {
-            const measurementsList = Object.entries(measurements)
-                .filter(([_, value]) => value)
-                .map(([key, value]) => `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value}"`)
-                .join(', ');
-
+        function generateProductHTML(title, category, condition, measurements, price, notes) {
             return `<!doctype html>
 <html lang="en">
 <head>
@@ -353,11 +319,11 @@
                     <div class="product-info">
                         <h1>${title}</h1>
                         <div class="product-price">$${price}</div>
-                        <div class="size-badge">${condition} Condition</div>
+                        <div class="size-badge">${condition}</div>
                         <div class="measurements">
                             <h3>Measurements</h3>
                             <ul class="measurements-list">
-                                ${measurementsList.split(', ').map(m => `<li>${m}</li>`).join('')}
+                                ${measurements.split(',').map(m => `<li>${m.trim()}</li>`).join('')}
                             </ul>
                         </div>
                         ${notes ? `<div class="condition">
